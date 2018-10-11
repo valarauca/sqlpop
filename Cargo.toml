@@ -13,6 +13,7 @@ build = "build.rs" # LALRPOP preprocessing
 
 [dependencies]
 lalrpop-util = "0.14"
+enum-methods = "=0.0.8"
 
 [build-dependencies]
 lalrpop = "0.14"

@@ -1,13 +1,13 @@
 //! Abstract Syntax Tree
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq,EnumAsGetters,EnumIsA,EnumIntoGetters)]
 pub enum Cmd {
     Explain(Stmt),
     ExplainQueryPlan(Stmt),
     Stmt(Stmt),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Stmt {
     // table name, body
     AlterTable(QualifiedName, AlterTableBody),
@@ -120,7 +120,7 @@ pub enum Stmt {
     Vacuum(Option<Name>),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Expr {
     Between {
         lhs: Box<Expr>,
@@ -194,7 +194,7 @@ pub enum Expr {
     Variable(String),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Literal {
     Numeric(String),
     String(String),
@@ -205,7 +205,7 @@ pub enum Literal {
     CurrentTimestamp,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum LikeOperator {
     Glob,
     Like,
@@ -213,7 +213,7 @@ pub enum LikeOperator {
     Regexp,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Operator {
     Add,
     And,
@@ -237,7 +237,7 @@ pub enum Operator {
     Substract,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum UnaryOperator {
     // bitwise negation (~)
     BitwiseNot,
@@ -269,7 +269,7 @@ pub struct CompoundSelect {
     pub select: OneSelect,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum CompoundOperator {
     Union,
     UnionAll,
@@ -277,7 +277,7 @@ pub enum CompoundOperator {
     Intersect,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum OneSelect {
     Select {
         distinctness: Option<Distinctness>,
@@ -295,13 +295,13 @@ pub struct FromClause {
     pub joins: Option<Vec<JoinedSelectTable>>,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Distinctness {
     Distinct,
     All,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum ResultColumn {
     Expr(Expr, Option<As>),
     Star,
@@ -309,7 +309,7 @@ pub enum ResultColumn {
     TableStar(Name),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum As {
     As(Name),
     Elided(String),
@@ -322,7 +322,7 @@ pub struct JoinedSelectTable {
     pub constraint: Option<JoinConstraint>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum SelectTable {
     Table(QualifiedName, Option<As>, Option<Indexed>),
     TableCall(QualifiedName, Option<Vec<Expr>>, Option<As>),
@@ -330,7 +330,7 @@ pub enum SelectTable {
     Sub(FromClause, Option<As>),
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum JoinOperator {
     Comma,
     TypedJoin {
@@ -339,7 +339,7 @@ pub enum JoinOperator {
     },
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum JoinType {
     Left,
     LeftOuter,
@@ -347,7 +347,7 @@ pub enum JoinType {
     Cross,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum JoinConstraint {
     On(Expr),
     // col names
@@ -368,14 +368,14 @@ pub struct QualifiedName {
     pub name: Name,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum AlterTableBody {
     // new table name
     RenameTo(Name),
     AddColumn(ColumnDefinition), // TODO distinction between ADD and ADD COLUMN
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum CreateTableBody {
     ColumnsAndConstraints {
         columns: Vec<ColumnDefinition>,
@@ -400,7 +400,7 @@ pub struct NamedColumnConstraint {
     pub constraint: ColumnConstraint,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum ColumnConstraint {
     PrimaryKey {
         order: Option<SortOrder>,
@@ -427,7 +427,7 @@ pub struct NamedTableConstraint {
     pub constraint: TableConstraint,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum TableConstraint {
     PrimaryKey {
         columns: Vec<SortedColumn>,
@@ -446,7 +446,7 @@ pub enum TableConstraint {
     },
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum SortOrder {
     Asc,
     Desc,
@@ -464,7 +464,7 @@ pub struct ForeignKeyClause {
     pub args: Vec<RefArg>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum RefArg {
     OnDelete(RefAct),
     OnInsert(RefAct),
@@ -472,7 +472,7 @@ pub enum RefArg {
     Match(Name),
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum RefAct {
     SetNull,
     SetDefault,
@@ -487,7 +487,7 @@ pub struct DeferSubclause {
     pub init_deferred: Option<InitDeferredPred>,
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum InitDeferredPred {
     InitiallyDeferred,
     InitiallyImmediate, // default
@@ -500,7 +500,7 @@ pub struct IndexedColumn {
     pub order: Option<SortOrder>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum Indexed {
     // idx name
     IndexedBy(Name),
@@ -519,7 +519,7 @@ pub struct Limit {
     pub offset: Option<Expr>, // TODO distinction between LIMIT offset, count and LIMIT count OFFSET offset
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum InsertBody {
     Select(Select),
     DefaultValues,
@@ -531,7 +531,7 @@ pub struct Set {
     pub expr: Expr,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum PragmaBody {
     Equals(PragmaValue),
     Call(PragmaValue),
@@ -539,14 +539,14 @@ pub enum PragmaBody {
 
 pub type PragmaValue = String; // TODO
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum TriggerTime {
     Before, // default
     After,
     InsteadOf,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum TriggerEvent {
     Delete,
     Insert,
@@ -555,7 +555,7 @@ pub enum TriggerEvent {
     UpdateOf(Vec<Name>),
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum TriggerCmd {
     Update {
         or_conflict: Option<ResolveType>,
@@ -576,7 +576,7 @@ pub enum TriggerCmd {
     Select(Select),
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum ResolveType {
     Rollback,
     Abort, // default
@@ -604,13 +604,13 @@ pub struct Type {
     pub size: Option<TypeSize>,
 }
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA)]
 pub enum TypeSize {
     MaxSize(String),
     TypeSize(String, String),
 }
 
-#[derive(Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Copy, Clone, Debug, PartialEq, Eq, EnumAsGetters, EnumIsA, EnumIntoGetters)]
 pub enum TransactionType {
     Deferred, // default
     Immediate,
