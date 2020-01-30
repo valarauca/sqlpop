@@ -1,5 +1,7 @@
 //! Abstract Syntax Tree
 
+use super::{ChangeSyntax,Postgres};
+
 #[derive(Clone, Debug, PartialEq, Eq,EnumAsGetters,EnumIsA,EnumIntoGetters)]
 pub enum Cmd {
     Explain(Stmt),
